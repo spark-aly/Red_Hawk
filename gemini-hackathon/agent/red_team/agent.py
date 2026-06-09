@@ -38,6 +38,7 @@ root_agent = Agent(
                     args=[_MCP_SERVER],
                     cwd=str(_here.parent.parent),  # gemini-hackathon/agent/
                 ),
+                timeout=30.0,  # Phoenix REST calls need up to 3.5 s each; give margin
             ),
             tool_name_prefix="phoenix_",
         ),

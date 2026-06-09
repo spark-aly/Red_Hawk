@@ -15,8 +15,7 @@ _genai_client: Optional[genai.Client] = None
 def _get_client() -> genai.Client:
     global _genai_client
     if _genai_client is None:
-        api_key = os.environ.get("GEMINI_API_KEY")
-        _genai_client = genai.Client(api_key=api_key) if api_key else genai.Client()
+        _genai_client = genai.Client()
     return _genai_client
 
 

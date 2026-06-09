@@ -1,6 +1,9 @@
 """
-Required Environment Variables:
-GEMINI_API_KEY, TARGET_URL, PHOENIX_API_KEY, PHOENIX_ENDPOINT
+Required Environment Variables (Vertex AI / ADC path):
+GOOGLE_GENAI_USE_VERTEXAI=TRUE
+GOOGLE_CLOUD_PROJECT=red-hawk-498917
+GOOGLE_CLOUD_LOCATION=us-central1
+TARGET_URL, PHOENIX_API_KEY, PHOENIX_ENDPOINT
 
 Required Pip Install:
 pip install python-dotenv requests pydantic google-genai
@@ -16,7 +19,7 @@ from google.genai import types
 
 load_dotenv()
 
-genai_client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+genai_client = genai.Client()
 TARGET_URL = os.getenv("TARGET_URL")
 
 class JudgeVerdict(BaseModel):

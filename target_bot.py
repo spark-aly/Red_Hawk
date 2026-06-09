@@ -1,6 +1,8 @@
 """
-Required Environment Variables:
-GEMINI_API_KEY
+Required Environment Variables (Vertex AI / ADC path):
+GOOGLE_GENAI_USE_VERTEXAI=TRUE
+GOOGLE_CLOUD_PROJECT=red-hawk-498917
+GOOGLE_CLOUD_LOCATION=us-central1
 
 Required Pip Install:
 pip install flask python-dotenv google-genai
@@ -14,14 +16,11 @@ from google.genai import types
 
 load_dotenv()
 
-if not os.getenv("GEMINI_API_KEY"):
-    raise RuntimeError("GEMINI_API_KEY not set - check your .env file")
-
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+client = genai.Client()
 
 app = Flask(__name__)
 
-GEMINI_MODEL = "gemini-2.0-flash"
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
 
 SYSTEM_PROMPT = (
     "You are a secure system assistant. "

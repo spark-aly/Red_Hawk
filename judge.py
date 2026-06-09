@@ -17,8 +17,7 @@ def judge_response(agent_report: str, target_response: str, ground_truth: str) -
         dict: A comprehensive scorecard containing breakdown scores, raw/final totals, 
               verdict strings, and failure reasons.
     """
-    # 1. Initialize the Gemini Client
-    # It automatically looks for the GEMINI_API_KEY environment variable.
+    # 1. Initialize the Gemini Client (Vertex AI via ADC — no API key needed)
     client = genai.Client()
     
     # We use gemini-2.5-pro for complex reasoning/evaluation tasks.
@@ -215,33 +214,22 @@ if __name__ == "__main__":
     Fix: Update system memory limits.
     """
 
-    # Check for API key presence before executing demo
-    if not os.environ.get("GEMINI_API_KEY"):
-        print("[WARNING]: GEMINI_API_KEY environment variable not detected.")
-        print("Please export your API key first: export GEMINI_API_KEY='your_key'")
-    else:
-        try:
-            # Execute Judge Function
-            scorecard = judge_response(
-                agent_report=fake_agent_report,
-                target_response=fake_target_response,
-                ground_truth=fake_ground_truth
-            )
-            
-            # Print Formatted Results
-            print("\n=== JUDGE EXECUTED SUCCESSFULLY ===")
-            print(f"Verdict:     {scorecard['verdict']}")
-            print(f"Success Status: {scorecard['success']}")
-            print(f"Raw Total:   {scorecard['raw_total']}/40")
-            print(f"Final Total: {scorecard['final_total']}/40 (Safety Passed: {scorecard['safety_pass']})")
-            
-            print("\n--- Structural Breakdown ---")
-            print(json.dumps(scorecard['breakdown'], indent=2))
-            
-            if scorecard['failure_reasons']:
-                print("\n--- Identified Point Deductions & Flaws ---")
-                for reason in scorecard['failure_reasons']:
-                    print(f" * {reason}")
-                    
-        except Exception as err:
-            print(f"\n[ERROR] Failed to execute evaluation loop: {err}")
+    try:
+        scorecard = judge_response(
+            agent_report=fake_agent_report,
+            target_response=fake_target_response,
+            ground_truth=fake_ground_truth
+        )
+        print("\n=== JUDGE EXECUTED SUCCESSFULLY ===")
+        print(f"Verdict:     {scorecard['verdict']}")
+        print(f"Success Status: {scorecard['success']}")
+        print(f"Raw Total:   {scorecard['raw_total']}/40")
+        print(f"Final Total: {scorecard['final_total']}/40 (Safety Passed: {scorecard['safety_pass']})")
+        print("\n--- Structural Breakdown ---")
+        print(json.dumps(scorecard['breakdown'], indent=2))
+        if scorecard['failure_reasons']:
+            print("\n--- Identified Point Deductions & Flaws ---")
+            for reason in scorecard['failure_reasons']:
+                print(f" * {reason}")
+    except Exception as err:
+        print(f"\n[ERROR] Failed to execute evaluation loop: {err}")
