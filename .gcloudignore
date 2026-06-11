@@ -1,0 +1,49 @@
+# .gcloudignore — controls what `gcloud run deploy --source .` uploads.
+# NOTE: once this file exists, gcloud no longer auto-reads .gitignore,
+# so everything we want excluded must be listed here explicitly.
+
+# --- Virtual environments (THE bloat: ~1.1 GB). Image installs from requirements.txt. ---
+.venv/
+**/.venv/
+venv/
+**/venv/
+env/
+
+# --- Version control: not needed to build the image ---
+.git/
+.gitignore
+.gcloudignore
+
+# --- Python caches & compiled artifacts (regenerated at runtime) ---
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# --- Secrets: provided at runtime via --set-env-vars, never uploaded ---
+.env
+**/.env
+*.key
+*.pem
+
+# --- Node (if any UI tooling appears later) ---
+node_modules/
+**/node_modules/
+
+# --- Logs & local data artifacts (not required to run in the cloud) ---
+*.log
+run_results.json
+**/run_results.json
+
+# --- Local docs / one-off scripts, not part of the deployed app ---
+Red_Hawk_Deployment_Guide.pdf
+make_deploy_pdf.py
+attack_research/
+divyanshi_files/
+
+# --- OS / editor cruft ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

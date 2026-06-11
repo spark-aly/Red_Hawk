@@ -70,6 +70,13 @@ if _DATA_SOURCE == "live":
     st.success("Showing **live** judge results from the latest pipeline run (`run_results.json`).")
 else:
     st.info("Showing **mock** data. Enter a target URL below and click **Start Assessment** to run a live evaluation.")
+
+# Re-read the latest saved results without starting a new assessment. Useful when
+# a run finished elsewhere (e.g. another device) and this page is showing stale data.
+if st.button("🔄 Refresh results"):
+    st.cache_data.clear()   # drop the cached DataFrame so the file is re-read
+    st.rerun()              # reruns the script top-to-bottom → fresh generate_real_results()
+
 st.markdown("---")
 
 # ==========================================

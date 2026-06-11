@@ -1,0 +1,21 @@
+# Keep the build context small and secret-free.
+.git
+.gitignore
+
+# Virtual environments (the image installs from requirements.txt).
+.venv
+**/.venv
+
+# Python caches
+**/__pycache__
+*.pyc
+
+# Secrets — provided at runtime, never baked into the image.
+.env
+**/.env
+
+# Local-only artifacts
+run_results.json
+Red_Hawk_Deployment_Guide.pdf
+make_deploy_pdf.py
+attack_research

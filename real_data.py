@@ -27,6 +27,15 @@ _RESULTS_PATH = _HERE / "run_results.json"
 
 # Load env (Vertex / Phoenix) and make the red_team package importable.
 load_dotenv(_HERE / "gemini-hackathon" / ".env")
+
+# Deploy-time env vars can arrive with stray whitespace (a wrapped copy-paste once
+# put "\n  " inside GOOGLE_CLOUD_LOCATION, breaking every Vertex URL). None of these
+# values legitimately contain whitespace, so collapse it wherever it appears.
+_ENV_PREFIXES = ("GOOGLE_GENAI_", "GOOGLE_CLOUD_", "GOOGLE_API_", "GEMINI_", "JUDGE_", "PHOENIX_", "TARGET_")
+for _k, _v in list(os.environ.items()):
+    if _k.startswith(_ENV_PREFIXES) and _v != "".join(_v.split()):
+        os.environ[_k] = "".join(_v.split())
+
 os.environ.setdefault("TARGET_URL", "http://127.0.0.1:5001/attack")
 _AGENT_DIR = str(_HERE / "gemini-hackathon" / "agent")
 if _AGENT_DIR not in sys.path:
